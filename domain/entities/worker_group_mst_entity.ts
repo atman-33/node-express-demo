@@ -1,4 +1,4 @@
-class WorkerGroupMstEntity {
+export class WorkerGroupMstEntity {
     
     WorkerGroupCode: string;
     WorkerGroupName: string;
