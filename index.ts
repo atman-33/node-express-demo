@@ -1,4 +1,10 @@
-import express from 'express'
+import express from 'express';
+import * as fs from "fs";
+
+// configを読み込み
+const rawdata = fs.readFileSync("./config/config.json");
+const config = JSON.parse(rawdata.toString());
+
 const app: express.Express = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -11,8 +17,8 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
     next();
 })
 
-app.listen(3000, () => {
-    console.log("Start on port 3000.")
+app.listen(config.port, () => {
+    console.log("Start on port " + config.port + ".")
 })
 
 type User = {
