@@ -26,11 +26,19 @@ app.listen(Shared.PORT, () => {
 // ] 
 
 const workerGroupMstRepository: IWorkerGroupMstRepository = Factories.createWorkerGroupMst();
-const entitiesPromise: Promise<readonly WorkerGroupMstEntity[]> = workerGroupMstRepository.getData();
 
 // 一覧取得
-entitiesPromise.then((entities: readonly WorkerGroupMstEntity[]) => {
+const fetchData = async () => {
+    const data = await workerGroupMstRepository.getData();
     app.get('/entities', (req: express.Request, res: express.Response) => {
-        res.send(JSON.stringify(entities))
+        res.send(JSON.stringify(data))
     })
+
+    return data;
+};
+
+fetchData().then(data => {
+    console.log(data);
+}).catch(error => {
+    console.error(error);
 });
