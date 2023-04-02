@@ -1,0 +1,8 @@
+// サーバー起動
+node index.js
+
+// configファイルを変更してサーバー起動
+node index.js --NODE_ENV=config
+
+// config対象を切り替え
+export NODE_ENV=config
