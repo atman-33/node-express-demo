@@ -1,6 +1,6 @@
 {
     "port":3000,
-    "is_fake":1,
+    "is_fake":0,
     "sqlite":{
         "file_path":"C:\\Repos\\template-web-ts\\fake\\SQLite.db"
     },

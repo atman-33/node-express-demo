@@ -28,4 +28,25 @@ export class Shared {
         }
         return Shared._config.sqlite.file_path;
     }
+
+    static get ORACLE_USER(): string {
+        if(this._config == null) {
+            this.load();
+        }
+        return Shared._config.oracle.user;
+    }
+
+    static get ORACLE_PASSWORD(): string {
+        if(this._config == null) {
+            this.load();
+        }
+        return Shared._config.oracle.password;
+    }
+
+    static get ORACLE_DATA_SOURCE(): string {
+        if(this._config == null) {
+            this.load();
+        }
+        return Shared._config.oracle.data_source;
+    }
 }
