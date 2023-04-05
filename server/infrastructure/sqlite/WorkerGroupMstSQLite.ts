@@ -25,13 +25,13 @@ class WorkerGroupMstSQLite implements IWorkerGroupMstRepository {
         const updateSql: string = 'UPDATE tmp_worker_group_mst SET worker_group_name = ? WHERE worker_group_code = ?';
 
         const insertParameters: any[] = [
-            entity.WorkerGroupCode,
-            entity.WorkerGroupName
+            entity.workerGroupCode,
+            entity.workerGroupName
         ];
 
         const updateParameters: any[] = [
-            entity.WorkerGroupName,
-            entity.WorkerGroupCode
+            entity.workerGroupName,
+            entity.workerGroupCode
         ];
 
         return new Promise<void>((resolve, reject) => {
@@ -47,7 +47,7 @@ class WorkerGroupMstSQLite implements IWorkerGroupMstRepository {
 
     public delete(entity: WorkerGroupMstEntity): Promise<void> {
         const deleteSql: string = 'DELETE FROM tmp_worker_group_mst WHERE worker_group_code = ?';
-        const parameters: any[] = [entity.WorkerGroupCode];
+        const parameters: any[] = [entity.workerGroupCode];
 
         return new Promise((resolve, reject) => {
             SQLiteHelper.ExecuteSql(deleteSql, parameters)
