@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import http from 'http';
-import index from './interfaces';
+import api from './interfaces/controllers';
 
 const app = express();
 
@@ -16,7 +16,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/api', index);
+// htmlを追加
+app.use(express.static("./dist"));
+
+// apiを追加
+app.use('/api', api);
 
 const server = http.createServer(app);
 

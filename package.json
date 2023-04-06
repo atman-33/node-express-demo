@@ -13,5 +13,10 @@
     "@types/oracledb": "^5.2.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.3"
+  },
+  "scripts": {
+    "build": "npm run build:html && tsc",
+    "build:html": "copy interfaces\\web\\pages\\*.html dist\\",
+    "start": "npm run build:html && tsc && node ./dist/server.js"
   }
 }
