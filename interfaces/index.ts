@@ -1,5 +1,5 @@
 import express, { Application } from 'express';
-import workerGroupMstController from './http/WorkerGroupMstController';
+import workerGroupMstController from './controllers/WorkerGroupMstController';
 
 const app: Application = express();
 

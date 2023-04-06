@@ -9,4 +9,4 @@ https://qiita.com/kabosu3d/items/06ce9266bc2db1226421
 https://maasaablog.com/development/frontend/typescript/5078/
 
 // ts.indexからサーバー起動
-npx ts-node server/server.ts
+npx ts-node server.ts
