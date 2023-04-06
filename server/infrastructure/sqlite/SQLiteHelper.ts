@@ -25,17 +25,15 @@ class SQLiteHelper {
         const db = new sqlite3.Database(SQLiteHelper._dataSource);
 
         return new Promise<ReadonlyArray<T>>((resolve, reject) => {
-            db.serialize(() => {
-                db.all(sql, parameters, (error, rows) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        const entities = rows.map(createEntity);
-                        resolve(entities);
-                    }
-                });
+            db.all(sql, parameters, (error, rows) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    const entities = rows.map(createEntity);
+                    resolve(entities);
+                }
             });
-
+            
             db.close();
         });
     }
@@ -49,15 +47,13 @@ class SQLiteHelper {
         const db = new sqlite3.Database(SQLiteHelper._dataSource);
 
         return new Promise<T>((resolve, reject) => {
-            db.serialize(() => {
-                db.get(sql, parameters, (error, row) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        const entity = row ? createEntity(row) : nullEntity;
-                        resolve(entity);
-                    }
-                });
+            db.get(sql, parameters, (error, row) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    const entity = row ? createEntity(row) : nullEntity;
+                    resolve(entity);
+                }
             });
 
             db.close();
@@ -68,24 +64,22 @@ class SQLiteHelper {
         const db = new sqlite3.Database(SQLiteHelper._dataSource);
 
         return new Promise((resolve, reject) => {
-            db.serialize(() => {
-                db.run(update, updateParameters, function (err) {
-                    if (err) {
-                        reject(err);
+            db.run(update, updateParameters, function (err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    if (this.changes < 1) {
+                        db.run(insert, insertParameters, function (err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve();
+                            }
+                        });
                     } else {
-                        if (this.changes < 1) {
-                            db.run(insert, insertParameters, function (err) {
-                                if (err) {
-                                    reject(err);
-                                } else {
-                                    resolve();
-                                }
-                            });
-                        } else {
-                            resolve();
-                        }
+                        resolve();
                     }
-                });
+                }
             });
 
             db.close();
@@ -96,14 +90,12 @@ class SQLiteHelper {
         const db = new sqlite3.Database(SQLiteHelper._dataSource);
 
         return new Promise((resolve, reject) => {
-            db.serialize(() => {
-                db.run(sql, parameters, function (err) {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
+            db.run(sql, parameters, function (err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
             });
 
             db.close();
