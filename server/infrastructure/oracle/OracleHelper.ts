@@ -35,20 +35,15 @@ class OracleHelper {
         try {
             connection = await oracledb.getConnection(OracleHelper._DBConfig);
             console.log('Connected to the database.');
-            const result = await connection.execute(sql, parameters, { outFormat: oracledb.OUT_FORMAT_OBJECT });
+            const result = await connection.execute(sql, parameters);
             if (result === undefined || result.rows === undefined) {
                 throw new Error("No results returned from the database.");
             }
-            // ここからデバッグ用
             console.log(`result.rows: ${result.rows}`);
-
-            if (result.rows[0] === undefined || result.rows[0] == null) {
-                throw new Error("No results returned from the database.");
+            const entities: T[] = [];
+            for (const row of result.rows) {
+                entities.push(createEntity(row))
             }
-            const firstColumnValue = Object.values(result.rows[0])[0];
-            console.log(`result.rows 1行目の1カラム目: ${firstColumnValue}`);
-            // ここまでデバッグ用
-            const entities = result.rows.map(createEntity);
             return entities;
         } catch (error) {
             throw error;
@@ -68,7 +63,7 @@ class OracleHelper {
         let connection;
         try {
             connection = await oracledb.getConnection(OracleHelper._DBConfig);
-            const result = await connection.execute(sql, parameters, { outFormat: oracledb.OUT_FORMAT_OBJECT });
+            const result = await connection.execute(sql, parameters);
             if (result === undefined || result.rows === undefined) {
                 throw new Error("No results returned from the database.");
             }

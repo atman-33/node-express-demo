@@ -10,8 +10,8 @@ class WorkerGroupMstOracle implements IWorkerGroupMstRepository {
         return new Promise((resolve, reject) => {
             OracleHelper.query<WorkerGroupMstEntity>(sql, [], row => {
                 return new WorkerGroupMstEntity(
-                    row.worker_group_code,
-                    row.worker_group_name);
+                    row[0],
+                    row[1]);
             }).then(entities => {
                 resolve(entities);
             }).catch(error => {
