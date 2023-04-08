@@ -1,0 +1,23 @@
+# node_modules ディレクトリを除外する
+node_modules/
+
+# ビルドディレクトリを除外する
+dist/
+build/
+out/
+
+# 開発用に作成された一時的なファイルを除外する
+*.log
+*.tsbuildinfo
+*.env
+
+# キャッシュファイルを除外する
+.cache/
+*.swp
+.DS_Store
+
+# 設定ファイルを除外する
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
