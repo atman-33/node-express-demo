@@ -15,6 +15,9 @@ https://maasaablog.com/development/frontend/typescript/5078/
 
 ## コマンドメモ
 
+// package.json に記載されたモジュールをインストール
+npm install
+
 // サーバー起動（apiのみ）
 npx ts-node server.ts
 
