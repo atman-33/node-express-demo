@@ -1,3 +1,9 @@
+WebAPIとWebページを起動するテンプレートアプリ
+- DDDアーキテクチャ
+- TypeScript で開発
+- src => dist にjsとhtmlを出力
+- dist/server.js からサーバー起動 
+
 ## 参考サイト
 
 // expressの開発にTypeScriptを利用する
@@ -12,12 +18,6 @@ https://maasaablog.com/development/frontend/typescript/5078/
 // サーバー起動（apiのみ）
 npx ts-node server.ts
 
-// webpack からビルド
-npx webpack --mode production
-
-// サーバー起動（http+api）※ビルド後にサーバー起動
-npm run build
-
 ## ビルド&サーバー起動の手順
 
 1. distフォルダに存在するフォルダとファイルを削除
@@ -30,5 +30,8 @@ tsc
 3. htmlファイルをビルド（コピー）
 xcopy /E /I src\\interfaces\\web\\pages\\*.html dist\\interfaces\\web\\pages\\*.html
 
-上記1-3を実行するコマンド（package.jsonで定義）
+4. distのエンドポイントを起動
+node ./dist/server.js
+
+上記1-4を実行するコマンド（package.jsonで定義）
 npm run start
