@@ -8,7 +8,7 @@ class WorkerGroupMstOracle implements IWorkerGroupMstRepository {
         const sql: string = 'SELECT worker_group_code, worker_group_name FROM tmp_worker_group_mst';
 
         return new Promise((resolve, reject) => {
-            OracleHelper.query<WorkerGroupMstEntity>(sql, [], row => {
+            OracleHelper.query<WorkerGroupMstEntity>(sql, {}, row => {
                 return new WorkerGroupMstEntity(
                     row[0],
                     row[1]);
@@ -30,7 +30,7 @@ class WorkerGroupMstOracle implements IWorkerGroupMstRepository {
         };
 
         return new Promise<void>((resolve, reject) => {
-            OracleHelper.Execute(insertSql, updateSql, parameters)
+            OracleHelper.executeUpsert(insertSql, updateSql, parameters)
                 .then(() => {
                     resolve();
                 })
@@ -45,7 +45,7 @@ class WorkerGroupMstOracle implements IWorkerGroupMstRepository {
         const parameters: any = { workerGroupCode: entity.workerGroupCode.value };
 
         return new Promise((resolve, reject) => {
-            OracleHelper.ExecuteSql(deleteSql, parameters)
+            OracleHelper.executeSql(deleteSql, parameters)
                 .then(() => {
                     resolve();
                 })

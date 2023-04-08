@@ -19,13 +19,19 @@ class SQLiteHelper {
 
     public static async query<T>(
         sql: string,
-        parameters: any[],
+        parameters: any,
         createEntity: (row: any) => T)
         : Promise<ReadonlyArray<T>> {
         const db = new sqlite3.Database(SQLiteHelper._dataSource);
 
         return new Promise<ReadonlyArray<T>>((resolve, reject) => {
-            db.all(sql, parameters, (error, rows) => {
+            let replacedSql = sql;
+            for (const [key, value] of Object.entries(parameters)) {
+                replacedSql = replacedSql.replace(new RegExp(`@${key}`, 'g'), "'" + value + "'");
+            }
+            console.log(`query sql: ${replacedSql}`);
+
+            db.all(replacedSql, (error, rows) => {
                 if (error) {
                     reject(error);
                 } else {
@@ -33,21 +39,27 @@ class SQLiteHelper {
                     resolve(entities);
                 }
             });
-            
+
             db.close();
         });
     }
 
     public static async querySingle<T>(
         sql: string,
-        parameters: any[],
+        parameters: any,
         createEntity: (row: any) => T,
         nullEntity: T)
         : Promise<T> {
         const db = new sqlite3.Database(SQLiteHelper._dataSource);
 
         return new Promise<T>((resolve, reject) => {
-            db.get(sql, parameters, (error, row) => {
+            let replacedSql = sql;
+            for (const [key, value] of Object.entries(parameters)) {
+                replacedSql = replacedSql.replace(new RegExp(`@${key}`, 'g'), "'" + value + "'");
+            }
+            console.log(`querySingle sql: ${replacedSql}`);
+
+            db.get(replacedSql, (error, row) => {
                 if (error) {
                     reject(error);
                 } else {
@@ -60,16 +72,29 @@ class SQLiteHelper {
         });
     }
 
-    public static Execute(insert: string, update: string, insertParameters: any[], updateParameters: any[]): Promise<void> {
+    public static executeUpsert(insert: string, update: string, parameters: any[]): Promise<void> {
+        let replacedSql: string;
         const db = new sqlite3.Database(SQLiteHelper._dataSource);
 
         return new Promise((resolve, reject) => {
-            db.run(update, updateParameters, function (err) {
+            replacedSql = update;
+            for (const [key, value] of Object.entries(parameters)) {
+                replacedSql = replacedSql.replace(new RegExp(`@${key}`, 'g'), "'" + value + "'");
+            }
+            console.log(`update sql: ${replacedSql}`);
+
+            db.run(replacedSql, function (err) {
                 if (err) {
                     reject(err);
                 } else {
                     if (this.changes < 1) {
-                        db.run(insert, insertParameters, function (err) {
+                        replacedSql = insert;
+                        for (const [key, value] of Object.entries(parameters)) {
+                            replacedSql = replacedSql.replace(new RegExp(`@${key}`, 'g'), "'" + value + "'");
+                        }
+                        console.log(`insert sql: ${replacedSql}`);
+            
+                        db.run(replacedSql, function (err) {
                             if (err) {
                                 reject(err);
                             } else {
@@ -86,11 +111,17 @@ class SQLiteHelper {
         });
     }
 
-    public static ExecuteSql(sql: string, parameters: any[]): Promise<void> {
+    public static executeSql(sql: string, parameters: any[]): Promise<void> {
         const db = new sqlite3.Database(SQLiteHelper._dataSource);
 
         return new Promise((resolve, reject) => {
-            db.run(sql, parameters, function (err) {
+            let replacedSql = sql;
+            for (const [key, value] of Object.entries(parameters)) {
+                replacedSql = replacedSql.replace(new RegExp(`@${key}`, 'g'), "'" + value + "'");
+            }
+            console.log(`excute sql: ${replacedSql}`);
+
+            db.run(replacedSql, function (err) {
                 if (err) {
                     reject(err);
                 } else {

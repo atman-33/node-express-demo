@@ -28,7 +28,7 @@ class OracleHelper {
 
     public static async query<T>(
         sql: string,
-        parameters: any[],
+        parameters: any,
         createEntity: (row: any) => T)
         : Promise<ReadonlyArray<T>> {
         let connection;
@@ -56,7 +56,7 @@ class OracleHelper {
 
     public static async querySingle<T>(
         sql: string,
-        parameters: any[],
+        parameters: any,
         createEntity: (row: any) => T,
         nullEntity: T)
         : Promise<T> {
@@ -78,7 +78,7 @@ class OracleHelper {
         }
     }
 
-    public static async Execute(insert: string, update: string, parameters: any): Promise<void> {
+    public static async executeUpsert(insert: string, update: string, parameters: any): Promise<void> {
         let connection;
         try {
             connection = await oracledb.getConnection(OracleHelper._DBConfig);
@@ -106,7 +106,7 @@ class OracleHelper {
         }
     }
 
-    public static async ExecuteSql(sql: string, parameters: any): Promise<void> {
+    public static async executeSql(sql: string, parameters: any): Promise<void> {
         let connection;
         try {
             connection = await oracledb.getConnection(OracleHelper._DBConfig);

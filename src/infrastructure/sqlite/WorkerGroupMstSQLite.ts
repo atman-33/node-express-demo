@@ -8,7 +8,7 @@ class WorkerGroupMstSQLite implements IWorkerGroupMstRepository {
         const sql: string = 'SELECT worker_group_code, worker_group_name FROM tmp_worker_group_mst';
 
         return new Promise((resolve, reject) => {
-            SQLiteHelper.query<WorkerGroupMstEntity>(sql, [], row => {
+            SQLiteHelper.query<WorkerGroupMstEntity>(sql, {}, row => {
                 return new WorkerGroupMstEntity(
                     row.worker_group_code,
                     row.worker_group_name);
@@ -21,21 +21,16 @@ class WorkerGroupMstSQLite implements IWorkerGroupMstRepository {
     }
 
     public save(entity: WorkerGroupMstEntity): Promise<void> {
-        const insertSql: string = 'INSERT INTO tmp_worker_group_mst (worker_group_code, worker_group_name) VALUES(?, ?)';
-        const updateSql: string = 'UPDATE tmp_worker_group_mst SET worker_group_name = ? WHERE worker_group_code = ?';
+        const insertSql: string = 'INSERT INTO tmp_worker_group_mst (worker_group_code, worker_group_name) VALUES(@workerGroupCode, @workerGroupName)';
+        const updateSql: string = 'UPDATE tmp_worker_group_mst SET worker_group_name = @workerGroupName WHERE worker_group_code = @workerGroupCode';
 
-        const insertParameters: any[] = [
-            entity.workerGroupCode.value,
-            entity.workerGroupName.value
-        ];
-
-        const updateParameters: any[] = [
-            entity.workerGroupName.value,
-            entity.workerGroupCode.value
-        ];
+        const parameters: any = {
+            workerGroupCode: entity.workerGroupCode.value,
+            workerGroupName: entity.workerGroupName.value
+        };
 
         return new Promise<void>((resolve, reject) => {
-            SQLiteHelper.Execute(insertSql, updateSql, insertParameters, updateParameters)
+            SQLiteHelper.executeUpsert(insertSql, updateSql, parameters)
                 .then(() => {
                     resolve();
                 })
@@ -46,11 +41,11 @@ class WorkerGroupMstSQLite implements IWorkerGroupMstRepository {
     }
 
     public delete(entity: WorkerGroupMstEntity): Promise<void> {
-        const deleteSql: string = 'DELETE FROM tmp_worker_group_mst WHERE worker_group_code = ?';
-        const parameters: any[] = [entity.workerGroupCode.value];
+        const deleteSql: string = 'DELETE FROM tmp_worker_group_mst WHERE worker_group_code = @workerGroupCode';
+        const parameters: any = { workerGroupCode: entity.workerGroupCode.value };
 
         return new Promise((resolve, reject) => {
-            SQLiteHelper.ExecuteSql(deleteSql, parameters)
+            SQLiteHelper.executeSql(deleteSql, parameters)
                 .then(() => {
                     resolve();
                 })
