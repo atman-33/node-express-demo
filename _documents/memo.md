@@ -1,0 +1,34 @@
+## 参考サイト
+
+// expressの開発にTypeScriptを利用する
+https://qiita.com/zaburo/items/69726cc42ef774990279
+
+// コーディング規約
+https://qiita.com/kabosu3d/items/06ce9266bc2db1226421
+https://maasaablog.com/development/frontend/typescript/5078/
+
+## コマンドメモ
+
+// サーバー起動（apiのみ）
+npx ts-node server.ts
+
+// webpack からビルド
+npx webpack --mode production
+
+// サーバー起動（http+api）※ビルド後にサーバー起動
+npm run build
+
+## ビルド&サーバー起動の手順
+
+1. distフォルダに存在するフォルダとファイルを削除
+del /f /s /q dist\\*.* > nul
+for /d %x in (dist\\*) do @rd /s /q %x > nul
+
+2. tsフォルダをビルド
+tsc
+
+3. htmlファイルをビルド（コピー）
+xcopy /E /I src\\interfaces\\web\\pages\\*.html dist\\interfaces\\web\\pages\\*.html
+
+上記1-3を実行するコマンド（package.jsonで定義）
+npm run start

@@ -18,7 +18,10 @@ const app = (0, express_1.default)();
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 // htmlを追加
-app.use(express_1.default.static("./dist"));
+const path = require('path');
+const webPagesPath = path.resolve(__dirname, 'interfaces/web/pages');
+console.log(`webPages: ${webPagesPath}`);
+app.use(express_1.default.static(webPagesPath));
 // apiを追加
 app.use('/api', controllers_1.default);
 const server = http_1.default.createServer(app);

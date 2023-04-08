@@ -27,7 +27,11 @@ exports.Shared = void 0;
 const fs = __importStar(require("fs"));
 class Shared {
     static load() {
-        const rawdata = fs.readFileSync("./config/config.json");
+        const path = require('path');
+        const configPath = "./config/config.json";
+        const absolutePath = path.resolve(configPath);
+        console.log(`config.json: ${absolutePath}`);
+        const rawdata = fs.readFileSync(configPath);
         this._config = JSON.parse(rawdata.toString());
     }
     static get PORT() {

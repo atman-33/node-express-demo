@@ -17,8 +17,7 @@ const fs_1 = require("fs");
 const path_1 = __importDefault(require("path"));
 const router = (0, express_1.Router)();
 router.get('/download-apk', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    //const file = 'C:\\path\\to\\file.txt'; // ダウンロードするファイルのパスを設定する
-    const file = path_1.default.join(__dirname, '../../../', 'public/fake-apk.txt');
+    const file = path_1.default.join('./downloads/fake-apk.txt');
     const fileName = 'fake-apk.txt'; // ダウンロード時のファイル名を設定する
     res.setHeader('Content-disposition', 'attachment; filename=' + fileName);
     res.setHeader('Content-type', 'application/octet-stream');

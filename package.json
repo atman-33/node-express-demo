@@ -11,12 +11,23 @@
     "@types/express": "^4.17.17",
     "@types/node": "^18.15.11",
     "@types/oracledb": "^5.2.4",
+    "clean-webpack-plugin": "^4.0.0",
+    "glob": "^9.3.4",
+    "html-webpack-plugin": "^5.5.0",
+    "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.3",
+    "webpack": "^5.78.0",
+    "webpack-cli": "^5.0.1"
+  },
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "outDir": "./dist"
   },
   "scripts": {
-    "build": "npm run build:html && tsc",
-    "build:html": "copy interfaces\\web\\pages\\*.html dist\\",
-    "start": "npm run build:html && tsc && node ./dist/server.js"
+    "build": "npm run build:clean && tsc && npm run build:html",
+    "build:clean": "del /f /s /q dist\\*.* > nul && for /d %x in (dist\\*) do @rd /s /q %x > nul",
+    "build:html": "xcopy /E /I src\\interfaces\\web\\pages\\*.html dist\\interfaces\\web\\pages\\*.html",
+    "start": "npm run build && node ./dist/server.js"
   }
 }
