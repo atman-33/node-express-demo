@@ -9,7 +9,7 @@ class OracleHelper {
     private static _DBConfig = {
         user: Shared.ORACLE_USER,
         password: Shared.ORACLE_PASSWORD,
-        connectString: Shared.ORACLE_DATA_SOURCE
+        connectString: Shared.ORACLE_DATA_SOURCE,
     }
 
     static async open(): Promise<void> {
@@ -78,16 +78,20 @@ class OracleHelper {
         }
     }
 
-    public static async Execute(insert: string, update: string, insertParameters: any[], updateParameters: any[]): Promise<void> {
+    public static async Execute(insert: string, update: string, parameters: any): Promise<void> {
         let connection;
         try {
             connection = await oracledb.getConnection(OracleHelper._DBConfig);
-            let result = await connection.execute(update, updateParameters, { autoCommit: false });
+            //console.log(`update sql:${update}`);
+            //console.log(`update param:${JSON.stringify(parameters)}`);
+            let result = await connection.execute(update, parameters, { autoCommit: false });
             if (result === undefined || result.rowsAffected === undefined) {
                 throw new Error("No results returned from the database.");
             }
             if (result.rowsAffected < 1) {
-                result = await connection.execute(insert, insertParameters, { autoCommit: false });
+                //console.log(`insert sql:${insert}`);
+                //console.log(`insert param:${JSON.stringify(parameters)}`);
+                result = await connection.execute(insert, parameters, { autoCommit: false });
             }
             await connection.commit();
         } catch (error) {
@@ -102,10 +106,12 @@ class OracleHelper {
         }
     }
 
-    public static async ExecuteSql(sql: string, parameters: any[]): Promise<void> {
+    public static async ExecuteSql(sql: string, parameters: any): Promise<void> {
         let connection;
         try {
             connection = await oracledb.getConnection(OracleHelper._DBConfig);
+            console.log(`delete sql:${sql}`);
+            console.log(`delete param:${JSON.stringify(parameters)}`);
             await connection.execute(sql, parameters, { autoCommit: true });
         } catch (error) {
             throw error;

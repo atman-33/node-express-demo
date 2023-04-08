@@ -38,3 +38,13 @@ node ./dist/server.js
 
 上記1-4を実行するコマンド（package.jsonで定義）
 npm run start
+
+## テスト用
+curl -X POST -d '{"WorkerGroupCode":"D","WorkerGroupName":"メテオ"}' http://localhost:3000/api/worker-group-mst
+
+$jsonBody = '{"workerGroupCode":"D","workerGroupName":"メテオ2"}' | Out-String
+$utf8Bytes = [System.Text.Encoding]::UTF8.GetBytes($jsonBody)
+$response = Invoke-RestMethod -Method Post -Uri "http://localhost:3000/api/worker-group-mst" -Body $utf8Bytes -ContentType 'application/json; charset=utf-8'
+
+$jsonBody = '{"workerGroupCode":"D","workerGroupName":"メテオ"}'
+$response = Invoke-RestMethod -Method Delete -Uri "http://localhost:3000/api/worker-group-mst" -Body $jsonBody -ContentType 'application/json; charset=utf-8'

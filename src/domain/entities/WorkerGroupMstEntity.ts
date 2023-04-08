@@ -14,8 +14,8 @@ class WorkerGroupMstEntity {
         // 引数がreadonlyのため、コピーした変数を準備
         const mutableData: WorkerGroupMstEntity[] = [...data];
         const transformedData = mutableData.map(({ workerGroupCode, workerGroupName }) => ({
-            WorkerGroupCode: workerGroupCode.value,
-            WorkerGroupName: workerGroupName.value
+            workerGroupCode: workerGroupCode.value,
+            workerGroupName: workerGroupName.value
         }));
         return transformedData;
     }
