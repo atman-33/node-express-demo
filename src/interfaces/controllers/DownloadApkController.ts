@@ -5,11 +5,11 @@ import path from 'path';
 const router = Router();
 
 router.get('/download-apk', async (req: Request, res: Response) => {
-  const file = path.join('./downloads/fake-apk.txt');
-  const fileName = 'fake-apk.txt'; // ダウンロード時のファイル名を設定する
+  const file = path.join('./downloads/app-release.apk');
+  const fileName = 'app-release.apk'; // ダウンロード時のファイル名を設定する
   
   res.setHeader('Content-disposition', 'attachment; filename=' + fileName);
-  res.setHeader('Content-type', 'application/octet-stream');
+  res.setHeader('Content-type', 'application/vnd.android.package-archive');
 
   const fileStream = createReadStream(file);
   fileStream.pipe(res);
