@@ -8,6 +8,9 @@ const workerGroupMstRepository: IWorkerGroupMstRepository = Factories.createWork
 
 router.use(json()); // body-parser middleware
 
+/**
+ * WebApi Get
+ */
 router.get('/worker-group-mst', async (req: Request, res: Response) => {
   try {
     const data = await workerGroupMstRepository.getData();
@@ -18,6 +21,10 @@ router.get('/worker-group-mst', async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * WebApi Post
+ * リクエスト例: Body = '{"workerGroupCode":"D","workerGroupName":"メテオ"}'
+ */
 router.post('/worker-group-mst', async (req: Request, res: Response) => {
   // postする側の文字列はUTF-8とすること
   const { workerGroupCode, workerGroupName } = req.body;
@@ -39,8 +46,12 @@ router.post('/worker-group-mst', async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * WebApi Delete
+ * リクエスト例: http://localhost:3000/api/worker-group-mst?workerGroupCode=D&workerGroupName=テスト
+ */
 router.delete('/worker-group-mst', async (req: Request, res: Response) => {
-  const { workerGroupCode, workerGroupName } = req.body;
+  const { workerGroupCode, workerGroupName } = req.query;
 
   console.log(`/worker-group-mst => delete => workerGroupCode: ${workerGroupCode}`);
   console.log(`/worker-group-mst => delete => workerGroupName: ${workerGroupName}`);
@@ -49,7 +60,8 @@ router.delete('/worker-group-mst', async (req: Request, res: Response) => {
     return res.status(400).send({ message: 'workerGroupCode are required.' });
   }
 
-  const entity = new WorkerGroupMstEntity(workerGroupCode, workerGroupName);
+  // 不要な引数はundifinedの場合を想定して空文字を使用
+  const entity = new WorkerGroupMstEntity(workerGroupCode as string, workerGroupName as string ?? "");
   try {
     await workerGroupMstRepository.delete(entity);
     res.sendStatus(204);

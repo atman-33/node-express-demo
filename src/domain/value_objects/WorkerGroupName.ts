@@ -12,9 +12,6 @@ class WorkerGroupName extends ValueObject<{ value: string }> {
     public static create(code: string): WorkerGroupName {
 
         // ここで正規表現や文字列の長さなどのバリデーションを行うことができます
-        if (!code || code.trim().length === 0) {
-            throw new Error("Worker group code must be provided");
-        }
 
         return new WorkerGroupName({ value: code });
     }

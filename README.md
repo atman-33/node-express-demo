@@ -42,9 +42,9 @@ npm run start
 ## テスト用
 curl -X POST -d '{"WorkerGroupCode":"D","WorkerGroupName":"メテオ"}' http://localhost:3000/api/worker-group-mst
 
-$jsonBody = '{"workerGroupCode":"D","workerGroupName":"メテオ2"}' | Out-String
+$jsonBody = '{"workerGroupCode":"D","workerGroupName":"メテオ"}' | Out-String
 $utf8Bytes = [System.Text.Encoding]::UTF8.GetBytes($jsonBody)
 $response = Invoke-RestMethod -Method Post -Uri "http://localhost:3000/api/worker-group-mst" -Body $utf8Bytes -ContentType 'application/json; charset=utf-8'
 
-$jsonBody = '{"workerGroupCode":"D","workerGroupName":"メテオ"}'
-$response = Invoke-RestMethod -Method Delete -Uri "http://localhost:3000/api/worker-group-mst" -Body $jsonBody -ContentType 'application/json; charset=utf-8'
+$uri = "http://localhost:3000/api/worker-group-mst?workerGroupCode=D&workerGroupName=テスト"
+Invoke-RestMethod -Method DELETE -Uri $uri -ContentType "application/json; charset=utf-8"
